@@ -1,0 +1,16 @@
+int 1;
+7 // int a[10]=(1,2,3,4,5,6,7,8,9, 10);
+8- // for (1=0;i<10;i++)(
+9 // printf("%d\n",a[i]);#include<stdio.h>
+
+int main()
+{
+  int i,j=0;
+  int a[10]={1,2,3,4,5,6,7,8,9,10};
+  for (i=0;i<10;i++){
+     j=j+a[i];
+  printf("%d\n",a[i]);
+}
+printf(" The sum is: %d\n", j);
+    return 0;
+}
