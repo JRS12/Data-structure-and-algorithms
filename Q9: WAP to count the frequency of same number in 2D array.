@@ -1,0 +1,27 @@
+#include<stdio.h>
+int main()
+{
+int arr[4][4], i, j, n, freq=0;
+printf("Enter the elements of array:\n");
+for(i=0;i<4;i++)
+{
+for(j=0;j<4;j++)
+{
+scanf("%d", &arr[i][j]);
+}
+}
+printf("Enter the number you want to find the frequency of:\n");
+scanf("%d", &n);
+for(i=0;i<4;i++)
+{
+for(j=0;j<4;j++)
+{
+if(arr[i][j]==n)
+{
+freq=freq+1;
+}
+}
+}
+printf("The frequency of %d in the given array is: %d\n", n, freq);
+return 0;
+}
