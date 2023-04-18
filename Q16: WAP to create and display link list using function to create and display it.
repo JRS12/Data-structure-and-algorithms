@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int value;
+    struct Node *next;
+};
+typedef struct Node node;
+
+node *create_node(int value)
+{
+    node *new_node = (node *)malloc(sizeof(node));
+    new_node->value = value;
+    new_node->next = NULL;
+    return new_node;
+}
+
+void add_node(node **head_ref, int value)
+{
+    node *new_node = create_node(value);
+    if (*head_ref == NULL)
+    {
+        *head_ref = new_node;
+    }
+    else
+    {
+        node *current_node = *head_ref;
+        while (current_node->next != NULL)
+        {
+            current_node = current_node->next;
+        }
+        current_node->next = new_node;
+    }
+}
+void traversel(struct Node *ptr);
+int main()
+{
+    node *head = NULL;
+    add_node(&head, 1);
+    add_node(&head, 2);
+    add_node(&head, 3);
+    add_node(&head, 4);
+    add_node(&head, 5);
+    add_node(&head, 6);
+ 
+     printf("link list : \n");
+    while (head != NULL)
+    {    
+        printf("Element: %d\n", head->value);
+        head = head->next;
+    }
+    return 0;
+}
+void traversel(struct Node *ptr)
+{
+    while (ptr != NULL)
+    {
+        printf("Element: %d\n", ptr->value);
+        ptr = ptr->next;
+    }
+    return;
+}
