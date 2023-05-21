@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Function to get the length of the doubly linked list
+int getLength(struct Node* head) {
+    int count = 0;
+    struct Node* current = head;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+// Function to insert a node at the middle position of the list
+void insertAtMiddle(struct Node** head, int data) {
+    struct Node* newNode = createNode(data);
+    
+    if (*head == NULL) { // If the list is empty
+        *head = newNode;
+    } else {
+        int length = getLength(*head);
+        int position = length / 2;
+        
+        if (position == 0) { // If the list has only one node
+            newNode->next = *head;
+            (*head)->prev = newNode;
+            *head = newNode;
+        } else {
+            struct Node* current = *head;
+            int count = 0;
+            
+            while (count < position - 1) {
+                current = current->next;
+                count++;
+            }
+            
+            newNode->prev = current;
+            newNode->next = current->next;
+            
+            if (current->next != NULL) {
+                current->next->prev = newNode;
+            }
+            
+            current->next = newNode;
+        }
+    }
+}
+
+// Function to display the doubly linked list
+void displayList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d ", node->data);
+        node = node->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    
+    // Inserting nodes at the middle position
+    insertAtMiddle(&head, 2);
+    insertAtMiddle(&head, 3);
+    insertAtMiddle(&head, 4);
+    insertAtMiddle(&head, 1);
+    
+    // Displaying the doubly linked list
+    printf("Doubly linked list: ");
+    displayList(head);
+    
+    return 0;
+}
