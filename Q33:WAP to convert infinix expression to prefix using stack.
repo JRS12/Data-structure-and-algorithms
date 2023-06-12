@@ -1,0 +1,143 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAX_SIZE 100
+
+// Structure to represent a stack
+typedef struct {
+    char items[MAX_SIZE];
+    int top;
+} Stack;
+
+// Function to create an empty stack
+void createStack(Stack* stack) {
+    stack->top = -1;
+}
+
+// Function to check if the stack is empty
+int isEmpty(Stack* stack) {
+    if (stack->top == -1)
+        return 1;
+    else
+        return 0;
+}
+
+// Function to check if the stack is full
+int isFull(Stack* stack) {
+    if (stack->top == MAX_SIZE - 1)
+        return 1;
+    else
+        return 0;
+}
+
+// Function to push an element to the stack
+void push(Stack* stack, char item) {
+    if (isFull(stack)) {
+        printf("Stack Overflow. Cannot push element.\n");
+    } else {
+        stack->top++;
+        stack->items[stack->top] = item;
+    }
+}
+
+// Function to pop an element from the stack
+char pop(Stack* stack) {
+    if (isEmpty(stack)) {
+        printf("Stack Underflow. Cannot pop element.\n");
+        return '\0';
+    } else {
+        char item = stack->items[stack->top];
+        stack->top--;
+        return item;
+    }
+}
+
+// Function to get the precedence of an operator
+int getPrecedence(char operator) {
+    switch (operator) {
+        case '+':
+        case '-':
+            return 1;
+        case '*':
+        case '/':
+            return 2;
+        case '^':
+            return 3;
+    }
+    return -1;
+}
+
+// Function to check if a character is an operator
+int isOperator(char character) {
+    if (character == '+' || character == '-' || character == '*' || character == '/' || character == '^')
+        return 1;
+    else
+        return 0;
+}
+
+// Function to reverse a string
+void reverseString(char* string) {
+    int length = strlen(string);
+    int i, j;
+    char temp;
+    for (i = 0, j = length - 1; i < j; i++, j--) {
+        temp = string[i];
+        string[i] = string[j];
+        string[j] = temp;
+    }
+}
+
+// Function to convert infix expression to prefix
+void infixToPrefix(char* infix, char* prefix) {
+    Stack stack;
+    createStack(&stack);
+
+    int i, j;
+    char item;
+    char x;
+
+    reverseString(infix);
+
+    for (i = 0, j = 0; infix[i] != '\0'; i++) {
+        item = infix[i];
+        if (isalnum(item)) {
+            prefix[j++] = item;
+        } else if (item == ')') {
+            push(&stack, item);
+        } else if (item == '(') {
+            while ((x = pop(&stack)) != ')')
+                prefix[j++] = x;
+        } else if (isOperator(item)) {
+            while (!isEmpty(&stack) && getPrecedence(item) <= getPrecedence(stack.items[stack.top])) {
+                x = pop(&stack);
+                prefix[j++] = x;
+            }
+            push(&stack, item);
+        }
+    }
+
+    while (!isEmpty(&stack)) {
+        x = pop(&stack);
+        prefix[j++] = x;
+    }
+
+    prefix[j] = '\0';
+
+    reverseString(prefix);
+}
+
+int main() {
+    char infix[MAX_SIZE];
+    char prefix[MAX_SIZE];
+
+    printf("Enter an infix expression: ");
+    fgets(infix, MAX_SIZE, stdin);
+
+    infixToPrefix(infix, prefix);
+
+    printf("Prefix expression: %s\n", prefix);
+
+    return 0;
+}
